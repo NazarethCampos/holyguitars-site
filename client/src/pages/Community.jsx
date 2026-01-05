@@ -16,7 +16,7 @@ const PostCard = ({ post }) => {
   };
 
   return (
-    <Link to={`/post/${post.id}`} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
+    <Link to={`/posts/${post.id}`} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-900 hover:text-primary-600 transition-colors mb-2">
@@ -114,7 +114,7 @@ const Community = () => {
           <p className="text-gray-600">신앙 이야기와 기타 정보를 자유롭게 나누세요</p>
         </div>
         {currentUser && (
-          <Link to="/create-post?type=community" className="btn-primary mt-4 md:mt-0">
+          <Link to="/create-post" className="btn-primary mt-4 md:mt-0">
             + 글쓰기
           </Link>
         )}
@@ -133,9 +133,9 @@ const Community = () => {
           전체
         </button>
         <button
-          onClick={() => setFilter('faith')}
+          onClick={() => setFilter('신앙나눔')}
           className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'faith'
+            filter === '신앙나누'
               ? 'text-primary-600 border-primary-600'
               : 'text-gray-600 border-transparent hover:text-gray-900'
           }`}
@@ -143,9 +143,9 @@ const Community = () => {
           🙏 신앙나눔
         </button>
         <button
-          onClick={() => setFilter('free')}
+          onClick={() => setFilter('자유게시판')}
           className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'free'
+            filter === '자유게시판'
               ? 'text-primary-600 border-primary-600'
               : 'text-gray-600 border-transparent hover:text-gray-900'
           }`}
@@ -153,9 +153,9 @@ const Community = () => {
           💬 자유게시판
         </button>
         <button
-          onClick={() => setFilter('tips')}
+          onClick={() => setFilter('연주팁')}
           className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'tips'
+            filter === '연주팁'
               ? 'text-primary-600 border-primary-600'
               : 'text-gray-600 border-transparent hover:text-gray-900'
           }`}
@@ -185,7 +185,7 @@ const Community = () => {
             첫 번째 게시글을 작성해보세요!
           </p>
           {currentUser && (
-            <Link to="/create-post?type=community" className="btn-primary">
+            <Link to="/create-post" className="btn-primary">
               글쓰기
             </Link>
           )}

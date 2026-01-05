@@ -16,7 +16,7 @@ const VideoCard = ({ video }) => {
   const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '/placeholder-video.jpg';
 
   return (
-    <Link to={`/post/${video.id}`} className="card group">
+    <Link to={`/posts/${video.id}`} className="card group">
       <div className="relative aspect-video overflow-hidden">
         <img 
           src={thumbnailUrl} 
@@ -119,7 +119,7 @@ const VideoGallery = () => {
           <p className="text-gray-600">찬양곡, 커버, 레슨 영상을 감상하고 공유하세요</p>
         </div>
         {currentUser && (
-          <Link to="/create-post?type=video" className="btn-primary mt-4 md:mt-0">
+          <Link to="/create-post" className="btn-primary mt-4 md:mt-0">
             + 영상 업로드
           </Link>
         )}
@@ -138,9 +138,9 @@ const VideoGallery = () => {
           전체
         </button>
         <button
-          onClick={() => setFilter('worship')}
+          onClick={() => setFilter('찬양곡')}
           className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'worship'
+            filter === '찬양곡'
               ? 'text-primary-600 border-primary-600'
               : 'text-gray-600 border-transparent hover:text-gray-900'
           }`}
@@ -148,9 +148,9 @@ const VideoGallery = () => {
           🙏 찬양곡
         </button>
         <button
-          onClick={() => setFilter('cover')}
+          onClick={() => setFilter('커버곡')}
           className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'cover'
+            filter === '커버곡'
               ? 'text-primary-600 border-primary-600'
               : 'text-gray-600 border-transparent hover:text-gray-900'
           }`}
@@ -158,9 +158,9 @@ const VideoGallery = () => {
           🎵 커버곡
         </button>
         <button
-          onClick={() => setFilter('lesson')}
+          onClick={() => setFilter('레슨')}
           className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'lesson'
+            filter === '레슨'
               ? 'text-primary-600 border-primary-600'
               : 'text-gray-600 border-transparent hover:text-gray-900'
           }`}
@@ -190,7 +190,7 @@ const VideoGallery = () => {
             첫 번째 연주 영상을 업로드해보세요!
           </p>
           {currentUser && (
-            <Link to="/create-post?type=video" className="btn-primary">
+            <Link to="/create-post" className="btn-primary">
               영상 업로드하기
             </Link>
           )}

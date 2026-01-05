@@ -1,14 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { initKakao, initNaver, getNaverUserInfo } from '../utils/socialLogin';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signin, signInWithGoogle } = useAuth();
+  const [naverLogin, setNaverLogin] = useState(null);
+  const { signin, signInWithGoogle, signInWithKakao, signInWithNaver } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Initialize Kakao SDK
+    initKakao();
+
+    // Initialize Naver SDK
+    initNaver().then((login) => {
+      setNaverLogin(login);
+    });
+
+    // Check if returning from Naver callback
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token')) {
+      handleNaverCallback();
+    }
+  }, []);
+
+  const handleNaverCallback = async () => {
+    if (naverLogin) {
+      try {
+        setError('');
+        setLoading(true);
+        const naverUser = await getNaverUserInfo(naverLogin);
+        await signInWithNaver(naverUser);
+        navigate('/');
+      } catch (err) {
+        setError('Naver 로그인에 실패했습니다.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +77,28 @@ const Login = () => {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleKakaoSignIn = async () => {
+    try {
+      setError('');
+      setLoading(true);
+      await signInWithKakao();
+      navigate('/');
+    } catch (err) {
+      setError('Kakao 로그인에 실패했습니다.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNaverSignIn = () => {
+    // Naver login uses popup/redirect, handled by SDK
+    const naverBtn = document.getElementById('naverIdLogin_loginButton');
+    if (naverBtn) {
+      naverBtn.click();
     }
   };
 
@@ -144,7 +201,8 @@ const Login = () => {
               </div>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-6 space-y-3">
+              {/* Google Login */}
               <button
                 onClick={handleGoogleSignIn}
                 disabled={loading}
@@ -170,6 +228,42 @@ const Login = () => {
                 </svg>
                 Google로 로그인
               </button>
+
+              {/* Kakao Login */}
+              <button
+                onClick={handleKakaoSignIn}
+                disabled={loading}
+                className="w-full flex items-center justify-center px-6 py-3 rounded-lg shadow-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ backgroundColor: '#FEE500', color: '#000000' }}
+              >
+                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                  <path
+                    fill="currentColor"
+                    d="M12 3C6.486 3 2 6.262 2 10.29c0 2.546 1.693 4.776 4.244 6.043l-1.002 3.683a.389.389 0 00.585.442l4.315-2.885a13.672 13.672 0 002.858.298c5.514 0 10-3.262 10-7.29C22 6.262 17.514 3 12 3z"
+                  />
+                </svg>
+                Kakao로 로그인
+              </button>
+
+              {/* Naver Login */}
+              <div className="relative">
+                <button
+                  onClick={handleNaverSignIn}
+                  disabled={loading}
+                  className="w-full flex items-center justify-center px-6 py-3 rounded-lg shadow-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ backgroundColor: '#03C75A', color: '#ffffff' }}
+                >
+                  <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                    <path
+                      fill="currentColor"
+                      d="M16.273 12.845L7.376 0H0v24h7.726V11.156L16.624 24H24V0h-7.727v12.845z"
+                    />
+                  </svg>
+                  Naver로 로그인
+                </button>
+                {/* Hidden Naver login button for SDK */}
+                <div id="naverIdLogin" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden' }}></div>
+              </div>
             </div>
           </div>
         </div>
