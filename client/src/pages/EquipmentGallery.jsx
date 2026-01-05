@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 const EquipmentCard = ({ equipment }) => {
   return (
-    <Link to={`/post/${equipment.id}`} className="card group">
+    <Link to={`/posts/${equipment.id}`} className="card group">
       <div className="relative aspect-square overflow-hidden">
         <img 
           src={equipment.imageUrl || '/placeholder-equipment.jpg'} 
@@ -14,22 +14,22 @@ const EquipmentCard = ({ equipment }) => {
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
         />
         <div className="absolute top-2 right-2">
-          {equipment.subcategory === 'guitar' && (
+          {equipment.subcategory === '기타' && (
             <span className="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium">
               🎸 기타
             </span>
           )}
-          {equipment.subcategory === 'amp' && (
+          {equipment.subcategory === '앰프' && (
             <span className="bg-secondary-600 text-white px-3 py-1 rounded-full text-sm font-medium">
               🔊 앰프
             </span>
           )}
-          {equipment.subcategory === 'pedal' && (
+          {equipment.subcategory === '이펙터' && (
             <span className="bg-yellow-600 text-white px-3 py-1 rounded-full text-sm font-medium">
               🎛️ 이펙터
             </span>
           )}
-          {equipment.subcategory === 'accessory' && (
+          {equipment.subcategory === '악세서리' && (
             <span className="bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium">
               🎯 악세서리
             </span>
@@ -126,7 +126,7 @@ const EquipmentGallery = () => {
           <p className="text-gray-600">소중한 기타와 장비를 자랑하고 정보를 나누세요</p>
         </div>
         {currentUser && (
-          <Link to="/create-post?type=equipment" className="btn-primary mt-4 md:mt-0">
+          <Link to="/create-post" className="btn-primary mt-4 md:mt-0">
             + 장비 등록
           </Link>
         )}
@@ -145,9 +145,9 @@ const EquipmentGallery = () => {
           전체
         </button>
         <button
-          onClick={() => setFilter('guitar')}
+          onClick={() => setFilter('기타')}
           className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'guitar'
+            filter === '기타'
               ? 'text-primary-600 border-primary-600'
               : 'text-gray-600 border-transparent hover:text-gray-900'
           }`}
@@ -155,9 +155,9 @@ const EquipmentGallery = () => {
           🎸 기타
         </button>
         <button
-          onClick={() => setFilter('amp')}
+          onClick={() => setFilter('앰프')}
           className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'amp'
+            filter === '앰프'
               ? 'text-primary-600 border-primary-600'
               : 'text-gray-600 border-transparent hover:text-gray-900'
           }`}
@@ -165,9 +165,9 @@ const EquipmentGallery = () => {
           🔊 앰프
         </button>
         <button
-          onClick={() => setFilter('pedal')}
+          onClick={() => setFilter('이펙터')}
           className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'pedal'
+            filter === '이펙터'
               ? 'text-primary-600 border-primary-600'
               : 'text-gray-600 border-transparent hover:text-gray-900'
           }`}
@@ -175,9 +175,9 @@ const EquipmentGallery = () => {
           🎛️ 이펙터
         </button>
         <button
-          onClick={() => setFilter('accessory')}
+          onClick={() => setFilter('악세서리')}
           className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'accessory'
+            filter === '악세서리'
               ? 'text-primary-600 border-primary-600'
               : 'text-gray-600 border-transparent hover:text-gray-900'
           }`}
@@ -207,7 +207,7 @@ const EquipmentGallery = () => {
             첫 번째 장비를 등록해보세요!
           </p>
           {currentUser && (
-            <Link to="/create-post?type=equipment" className="btn-primary">
+            <Link to="/create-post" className="btn-primary">
               장비 등록하기
             </Link>
           )}

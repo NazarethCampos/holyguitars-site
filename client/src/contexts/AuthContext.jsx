@@ -6,10 +6,12 @@ import {
   onAuthStateChanged,
   updateProfile,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  signInWithCustomToken
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
+import { kakaoLogin, kakaoLogout } from '../utils/socialLogin';
 
 const AuthContext = createContext();
 
@@ -99,10 +101,113 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Sign in with Kakao
+  const signInWithKakao = async () => {
+    try {
+      setError(null);
+      const kakaoUser = await kakaoLogin();
+      
+      // Create or get Firebase user with Kakao info
+      const userDocRef = doc(db, 'users', `kakao_${kakaoUser.id}`);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (!userDoc.exists()) {
+        // Create new user document
+        await setDoc(userDocRef, {
+          uid: `kakao_${kakaoUser.id}`,
+          email: kakaoUser.email || `kakao_${kakaoUser.id}@kakao.com`,
+          displayName: kakaoUser.name,
+          photoURL: kakaoUser.photoURL,
+          bio: '',
+          favoriteGuitar: '',
+          createdAt: new Date().toISOString(),
+          role: 'member',
+          provider: 'kakao'
+        });
+      }
+
+      // Store Kakao user info in sessionStorage for custom auth
+      sessionStorage.setItem('kakaoUser', JSON.stringify({
+        uid: `kakao_${kakaoUser.id}`,
+        email: kakaoUser.email || `kakao_${kakaoUser.id}@kakao.com`,
+        displayName: kakaoUser.name,
+        photoURL: kakaoUser.photoURL,
+        provider: 'kakao'
+      }));
+
+      // Trigger auth state change
+      const userData = userDoc.exists() ? userDoc.data() : await getDoc(userDocRef).then(doc => doc.data());
+      setCurrentUser({ ...kakaoUser, ...userData, uid: `kakao_${kakaoUser.id}` });
+      
+      return userData;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
+  // Sign in with Naver
+  const signInWithNaver = async (naverUser) => {
+    try {
+      setError(null);
+      
+      // Create or get Firebase user with Naver info
+      const userDocRef = doc(db, 'users', `naver_${naverUser.id}`);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (!userDoc.exists()) {
+        // Create new user document
+        await setDoc(userDocRef, {
+          uid: `naver_${naverUser.id}`,
+          email: naverUser.email || `naver_${naverUser.id}@naver.com`,
+          displayName: naverUser.name,
+          photoURL: naverUser.photoURL,
+          bio: '',
+          favoriteGuitar: '',
+          createdAt: new Date().toISOString(),
+          role: 'member',
+          provider: 'naver'
+        });
+      }
+
+      // Store Naver user info in sessionStorage
+      sessionStorage.setItem('naverUser', JSON.stringify({
+        uid: `naver_${naverUser.id}`,
+        email: naverUser.email || `naver_${naverUser.id}@naver.com`,
+        displayName: naverUser.name,
+        photoURL: naverUser.photoURL,
+        provider: 'naver'
+      }));
+
+      // Trigger auth state change
+      const userData = userDoc.exists() ? userDoc.data() : await getDoc(userDocRef).then(doc => doc.data());
+      setCurrentUser({ ...naverUser, ...userData, uid: `naver_${naverUser.id}` });
+      
+      return userData;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   // Sign out
   const logout = async () => {
     try {
       setError(null);
+      
+      // Logout from Kakao if logged in via Kakao
+      const kakaoUser = sessionStorage.getItem('kakaoUser');
+      if (kakaoUser) {
+        await kakaoLogout();
+        sessionStorage.removeItem('kakaoUser');
+      }
+
+      // Logout from Naver if logged in via Naver
+      const naverUser = sessionStorage.getItem('naverUser');
+      if (naverUser) {
+        sessionStorage.removeItem('naverUser');
+      }
+
       await signOut(auth);
     } catch (err) {
       setError(err.message);
@@ -122,18 +227,36 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // Fetch additional user data from Firestore
-        const userProfile = await getUserProfile(user.uid);
-        setCurrentUser({ ...user, ...userProfile });
-      } else {
-        setCurrentUser(null);
-      }
-      setLoading(false);
-    });
+    // Check for social login sessions
+    const kakaoUser = sessionStorage.getItem('kakaoUser');
+    const naverUser = sessionStorage.getItem('naverUser');
 
-    return unsubscribe;
+    if (kakaoUser) {
+      const userData = JSON.parse(kakaoUser);
+      getUserProfile(userData.uid).then(profile => {
+        setCurrentUser({ ...userData, ...profile });
+        setLoading(false);
+      });
+    } else if (naverUser) {
+      const userData = JSON.parse(naverUser);
+      getUserProfile(userData.uid).then(profile => {
+        setCurrentUser({ ...userData, ...profile });
+        setLoading(false);
+      });
+    } else {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          // Fetch additional user data from Firestore
+          const userProfile = await getUserProfile(user.uid);
+          setCurrentUser({ ...user, ...userProfile });
+        } else {
+          setCurrentUser(null);
+        }
+        setLoading(false);
+      });
+
+      return unsubscribe;
+    }
   }, []);
 
   const value = {
@@ -143,6 +266,8 @@ export const AuthProvider = ({ children }) => {
     signup,
     signin,
     signInWithGoogle,
+    signInWithKakao,
+    signInWithNaver,
     logout,
     getUserProfile
   };
