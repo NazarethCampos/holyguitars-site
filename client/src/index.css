@@ -4,33 +4,61 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-holy-cream text-holy-espresso font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-holy-espresso;
   }
 }
 
 @layer components {
+  /* HolyGuitar Brand Buttons */
   .btn-primary {
-    @apply px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-200 shadow-md hover:shadow-lg;
+    @apply px-6 py-3 bg-holy-walnut text-holy-ivory rounded-lg font-semibold hover:bg-holy-walnut-700 transition-all duration-300 shadow-warm hover:shadow-warm-lg;
   }
   
   .btn-secondary {
-    @apply px-6 py-3 bg-secondary-600 text-white rounded-lg font-semibold hover:bg-secondary-700 transition-colors duration-200 shadow-md hover:shadow-lg;
+    @apply px-6 py-3 bg-holy-amber text-holy-espresso rounded-lg font-semibold hover:bg-holy-honey transition-colors duration-300 shadow-warm;
   }
   
   .btn-outline {
-    @apply px-6 py-3 border-2 border-primary-600 text-primary-600 rounded-lg font-semibold hover:bg-primary-50 transition-colors duration-200;
+    @apply px-6 py-3 border-2 border-holy-walnut text-holy-walnut rounded-lg font-semibold hover:bg-holy-walnut hover:text-holy-ivory transition-all duration-300;
   }
   
+  .btn-ghost {
+    @apply px-6 py-3 text-holy-walnut rounded-lg font-semibold hover:text-holy-amber hover:bg-holy-cream-200 transition-colors duration-300;
+  }
+  
+  /* HolyGuitar Brand Cards */
   .card {
-    @apply bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden;
+    @apply bg-holy-ivory rounded-xl shadow-warm hover:shadow-warm-lg transition-all duration-300 overflow-hidden border border-holy-cream-200;
   }
   
+  .card-primary {
+    @apply bg-holy-walnut text-holy-ivory rounded-xl shadow-warm hover:shadow-warm-lg transition-all duration-300 overflow-hidden;
+  }
+  
+  /* Input Fields */
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all;
+    @apply w-full px-4 py-3 bg-holy-ivory border-2 border-holy-cream-300 rounded-lg focus:ring-2 focus:ring-holy-amber-200 focus:border-holy-amber outline-none transition-all duration-300 text-holy-espresso;
   }
   
+  /* Badges & Tags */
   .badge {
     @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .badge-amber {
+    @apply bg-holy-amber-100 text-holy-amber-800;
+  }
+  
+  .badge-walnut {
+    @apply bg-holy-walnut-100 text-holy-walnut-800;
+  }
+  
+  .badge-honey {
+    @apply bg-holy-honey-100 text-holy-honey-700;
   }
 }
 
