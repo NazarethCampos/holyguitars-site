@@ -9,6 +9,13 @@ import { fileURLToPath } from 'url';
 // Routes
 import postsRouter from './routes/posts.js';
 import usersRouter from './routes/users.js';
+import adminRouter from './routes/admin.js';
+import searchRouter from './routes/search.js';
+import notificationsRouter from './routes/notifications.js';
+import reportsRouter from './routes/reports.js';
+
+// Middleware
+import { apiLimiter } from './middleware/rateLimiter.js';
 
 // Load environment variables
 dotenv.config();
@@ -28,9 +35,16 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Apply rate limiting to all API routes
+app.use('/api/', apiLimiter);
+
 // API Routes
 app.use('/api/posts', postsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/search', searchRouter);
+app.use('/api/notifications', notificationsRouter);
+app.use('/api/reports', reportsRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
