@@ -46,7 +46,9 @@ firestore-debug.log
 ecosystem.config.cjs
 
 # Old files
-public/
+# public/ - 디자인 에셋을 위해 주석 처리
+!public/assets/
+!public/favicon.png
 src/migrations/
 src/seeders/
 src/config/database.json
