@@ -35,11 +35,11 @@ const PostCard = ({ post }) => {
   return (
     <Link
       to={`/posts/${post.id}`}
-      className="block bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+      className="block bg-holy-ivory rounded-xl shadow-warm hover:shadow-warm-lg transition-all duration-300 overflow-hidden border border-holy-cream-200 transform hover:-translate-y-1"
     >
       {/* Thumbnail */}
       {thumbnailUrl && (
-        <div className="relative aspect-video bg-gray-200">
+        <div className="relative aspect-video bg-holy-cream">
           <img
             src={thumbnailUrl}
             alt={post.title}
@@ -50,8 +50,8 @@ const PostCard = ({ post }) => {
           />
           {post.category === 'video' && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-black bg-opacity-60 rounded-full p-3">
-                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <div className="bg-holy-walnut bg-opacity-80 rounded-full p-4 shadow-warm">
+                <svg className="w-10 h-10 text-holy-amber" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                 </svg>
               </div>
@@ -61,60 +61,60 @@ const PostCard = ({ post }) => {
       )}
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-5">
         {/* Category Badge */}
         {post.subcategory && (
-          <span className="inline-block px-2 py-1 text-xs font-medium bg-primary-100 text-primary-800 rounded mb-2">
+          <span className="inline-block px-3 py-1 text-xs font-semibold bg-holy-amber-100 text-holy-amber-800 rounded-full mb-3">
             {post.subcategory}
           </span>
         )}
 
         {/* Title */}
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+        <h3 className="text-lg font-bold text-holy-espresso mb-2 line-clamp-2 hover:text-holy-walnut transition-colors">
           {post.title}
         </h3>
 
         {/* Description */}
         {post.description && (
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+          <p className="text-holy-walnut-600 text-sm mb-4 line-clamp-2">
             {post.description}
           </p>
         )}
 
         {/* Equipment Info */}
         {post.brand && post.model && (
-          <p className="text-sm text-gray-500 mb-3">
+          <p className="text-sm text-holy-honey font-medium mb-4">
             {post.brand} - {post.model}
           </p>
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between text-sm text-gray-500 pt-3 border-t border-gray-100">
+        <div className="flex items-center justify-between text-sm text-holy-walnut-500 pt-4 border-t border-holy-cream-300">
           <div className="flex items-center gap-2">
             {post.authorPhoto ? (
               <img
                 src={post.authorPhoto}
                 alt={post.authorName}
-                className="w-6 h-6 rounded-full"
+                className="w-7 h-7 rounded-full border-2 border-holy-amber-200"
               />
             ) : (
-              <div className="w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center">
-                <span className="text-xs text-primary-600 font-semibold">
+              <div className="w-7 h-7 rounded-full bg-holy-amber-100 flex items-center justify-center border-2 border-holy-amber-200">
+                <span className="text-xs text-holy-amber-700 font-bold">
                   {post.authorName?.charAt(0) || '?'}
                 </span>
               </div>
             )}
-            <span className="font-medium">{post.authorName}</span>
+            <span className="font-medium text-holy-walnut">{post.authorName}</span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1 text-holy-honey">
               ❤️ {post.likes || 0}
             </span>
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1 text-holy-walnut">
               💬 {post.commentsCount || 0}
             </span>
-            <span>{formatDate(post.createdAt)}</span>
+            <span className="text-holy-walnut-400">{formatDate(post.createdAt)}</span>
           </div>
         </div>
       </div>

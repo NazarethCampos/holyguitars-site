@@ -3,34 +3,38 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white mt-auto">
+    <footer className="bg-holy-walnut text-holy-ivory mt-auto shadow-warm-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <span className="text-3xl">🎸</span>
+            <div className="flex items-center space-x-3 mb-4">
+              <img 
+                src="/assets/logos/logo-symbol.png" 
+                alt="HG" 
+                className="h-12 w-12"
+              />
               <div className="flex flex-col">
-                <span className="text-lg font-bold">Christian Guitar Community</span>
-                <span className="text-sm text-gray-400">기독교 기타 애호가들의 모임</span>
+                <span className="text-xl font-bold text-holy-amber">홀리기타</span>
+                <span className="text-sm text-holy-cream">Holy Guitar Community</span>
               </div>
             </div>
-            <p className="text-gray-400 mb-4">
+            <p className="text-holy-cream mb-4 max-w-md">
               찬양과 연주로 하나님을 예배하는 기타 애호가들이 모여 
               서로의 재능을 나누고 격려하는 커뮤니티입니다.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-holy-cream hover:text-holy-amber transition-colors" aria-label="Facebook">
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-holy-cream hover:text-holy-amber transition-colors" aria-label="Instagram">
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-holy-cream hover:text-holy-amber transition-colors" aria-label="YouTube">
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.441 16.892c-2.102.144-6.784.144-8.883 0C5.282 16.736 5.017 15.622 5 12c.017-3.629.285-4.736 2.558-4.892 2.099-.144 6.782-.144 8.883 0C18.718 7.264 18.982 8.378 19 12c-.018 3.629-.285 4.736-2.559 4.892zM10 9.658l4.917 2.338L10 14.342V9.658z"/>
                 </svg>
@@ -40,20 +44,20 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">메뉴</h3>
+            <h3 className="text-lg font-bold mb-4 text-holy-amber">메뉴</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/videos" className="text-gray-400 hover:text-white transition-colors">
+                <Link to="/videos" className="text-holy-cream hover:text-holy-amber transition-colors">
                   연주 영상
                 </Link>
               </li>
               <li>
-                <Link to="/equipment" className="text-gray-400 hover:text-white transition-colors">
+                <Link to="/equipment" className="text-holy-cream hover:text-holy-amber transition-colors">
                   장비 갤러리
                 </Link>
               </li>
               <li>
-                <Link to="/community" className="text-gray-400 hover:text-white transition-colors">
+                <Link to="/community" className="text-holy-cream hover:text-holy-amber transition-colors">
                   커뮤니티
                 </Link>
               </li>
@@ -62,22 +66,43 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">문의</h3>
-            <ul className="space-y-2 text-gray-400">
-              <li>이메일: info@christianguitar.com</li>
-              <li>전화: 02-1234-5678</li>
-              <li>주소: 서울시 강남구</li>
+            <h3 className="text-lg font-bold mb-4 text-holy-amber">문의</h3>
+            <ul className="space-y-2 text-holy-cream">
+              <li>이메일: info@holyguitars.com</li>
+              <li>카카오톡: @holyguitars</li>
+              <li className="pt-2">
+                <a href="#" className="text-holy-amber hover:text-holy-honey transition-colors font-medium">
+                  문의하기 →
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} Christian Guitar Community. All rights reserved.</p>
-          <p className="mt-2">
-            Made with ❤️ for the glory of God | 
-            <Link to="/privacy" className="ml-2 hover:text-white">개인정보처리방침</Link> | 
-            <Link to="/terms" className="ml-2 hover:text-white">이용약관</Link>
-          </p>
+        <div className="border-t border-holy-walnut-600 mt-8 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center text-holy-cream text-sm">
+            <p className="mb-4 md:mb-0">
+              &copy; {new Date().getFullYear()} 홀리기타 Holy Guitar. All rights reserved.
+            </p>
+            <div className="flex items-center space-x-4">
+              <span className="text-holy-honey">
+                Made with ❤️ for the glory of God
+              </span>
+              <span className="text-holy-cream-300">|</span>
+              <Link to="/privacy" className="hover:text-holy-amber transition-colors">
+                개인정보처리방침
+              </Link>
+              <span className="text-holy-cream-300">|</span>
+              <Link to="/terms" className="hover:text-holy-amber transition-colors">
+                이용약관
+              </Link>
+            </div>
+          </div>
+          <div className="text-center mt-4">
+            <p className="text-holy-cream-400 text-xs italic">
+              "시편, 찬송, 신령한 노래들로 서로 화답하며 너희의 마음으로 주께 노래하며 찬송하며" - 에베소서 5:19
+            </p>
+          </div>
         </div>
       </div>
     </footer>
