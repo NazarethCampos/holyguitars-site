@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { 
-  doc, 
-  getDoc, 
-  getDocs,
-  collection, 
-  query, 
-  orderBy, 
-  onSnapshot,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  serverTimestamp,
-  increment
-} from 'firebase/firestore';
-import { db } from '../services/firebase';
+import Comment from '../components/Comment';
+import ReportModal from '../components/ReportModal';
+import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -28,54 +18,25 @@ const PostDetail = () => {
   const [error, setError] = useState('');
   const [commentText, setCommentText] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [editingComment, setEditingComment] = useState(null);
-  const [editingText, setEditingText] = useState('');
   const [liked, setLiked] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   useEffect(() => {
-    fetchPost();
-    const unsubscribe = subscribeToComments();
-    return () => unsubscribe && unsubscribe();
+    fetchPostData();
   }, [id]);
 
-  const fetchPost = async () => {
+  const fetchPostData = async () => {
     try {
       setLoading(true);
-      const postDoc = await getDoc(doc(db, 'posts', id));
-      
-      if (!postDoc.exists()) {
-        setError('게시글을 찾을 수 없습니다.');
-        return;
-      }
-
-      setPost({ id: postDoc.id, ...postDoc.data() });
-
-      // Check if user has liked this post
-      if (currentUser) {
-        const likeDoc = await getDoc(doc(db, 'posts', id, 'likes', currentUser.uid));
-        setLiked(likeDoc.exists());
-      }
+      const response = await axios.get(`${API_URL}/posts/${id}`);
+      setPost(response.data);
+      setComments(response.data.comments || []);
     } catch (err) {
       console.error('Error fetching post:', err);
       setError('게시글을 불러오는데 실패했습니다.');
     } finally {
       setLoading(false);
     }
-  };
-
-  const subscribeToComments = () => {
-    const q = query(
-      collection(db, 'posts', id, 'comments'),
-      orderBy('createdAt', 'desc')
-    );
-
-    return onSnapshot(q, (snapshot) => {
-      const commentsData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setComments(commentsData);
-    });
   };
 
   const handleLike = async () => {
@@ -85,30 +46,18 @@ const PostDetail = () => {
     }
 
     try {
-      const postRef = doc(db, 'posts', id);
-      const likeRef = doc(db, 'posts', id, 'likes', currentUser.uid);
-      const likeDoc = await getDoc(likeRef);
-
-      if (likeDoc.exists()) {
-        // Unlike
-        await deleteDoc(likeRef);
-        await updateDoc(postRef, {
-          likes: increment(-1)
-        });
-        setLiked(false);
-        setPost(prev => ({ ...prev, likes: prev.likes - 1 }));
-      } else {
-        // Like
-        await addDoc(collection(db, 'posts', id, 'likes'), {
-          userId: currentUser.uid,
-          createdAt: serverTimestamp()
-        });
-        await updateDoc(postRef, {
-          likes: increment(1)
-        });
-        setLiked(true);
-        setPost(prev => ({ ...prev, likes: prev.likes + 1 }));
-      }
+      const token = await currentUser.getIdToken();
+      const response = await axios.post(
+        `${API_URL}/posts/${id}/like`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      setLiked(response.data.liked);
+      setPost(prev => ({
+        ...prev,
+        likes: response.data.liked ? prev.likes + 1 : prev.likes - 1
+      }));
     } catch (err) {
       console.error('Error toggling like:', err);
       alert('좋아요 처리에 실패했습니다.');
@@ -129,21 +78,14 @@ const PostDetail = () => {
 
     try {
       setSubmitting(true);
+      const token = await currentUser.getIdToken();
+      const response = await axios.post(
+        `${API_URL}/posts/${id}/comments`,
+        { content: commentText },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      await addDoc(collection(db, 'posts', id, 'comments'), {
-        postId: id,
-        userId: currentUser.uid,
-        userName: currentUser.displayName || currentUser.email,
-        userPhoto: currentUser.photoURL || null,
-        content: commentText.trim(),
-        createdAt: serverTimestamp()
-      });
-
-      // Increment comments count
-      await updateDoc(doc(db, 'posts', id), {
-        commentsCount: increment(1)
-      });
-
+      setComments([response.data, ...comments]);
       setCommentText('');
       setPost(prev => ({ ...prev, commentsCount: prev.commentsCount + 1 }));
     } catch (err) {
@@ -154,43 +96,18 @@ const PostDetail = () => {
     }
   };
 
-  const handleEditComment = (comment) => {
-    setEditingComment(comment.id);
-    setEditingText(comment.content);
-  };
-
-  const handleUpdateComment = async (commentId) => {
-    if (!editingText.trim()) {
-      return;
-    }
-
-    try {
-      await updateDoc(doc(db, 'posts', id, 'comments', commentId), {
-        content: editingText.trim(),
-        updatedAt: serverTimestamp()
-      });
-
-      setEditingComment(null);
-      setEditingText('');
-    } catch (err) {
-      console.error('Error updating comment:', err);
-      alert('댓글 수정에 실패했습니다.');
-    }
-  };
-
   const handleDeleteComment = async (commentId) => {
     if (!confirm('댓글을 삭제하시겠습니까?')) {
       return;
     }
 
     try {
-      await deleteDoc(doc(db, 'posts', id, 'comments', commentId));
-
-      // Decrement comments count
-      await updateDoc(doc(db, 'posts', id), {
-        commentsCount: increment(-1)
+      const token = await currentUser.getIdToken();
+      await axios.delete(`${API_URL}/posts/${id}/comments/${commentId}`, {
+        headers: { Authorization: `Bearer ${token}` }
       });
 
+      setComments(comments.filter(c => c.id !== commentId));
       setPost(prev => ({ ...prev, commentsCount: Math.max(0, prev.commentsCount - 1) }));
     } catch (err) {
       console.error('Error deleting comment:', err);
@@ -204,13 +121,10 @@ const PostDetail = () => {
     }
 
     try {
-      // Delete all comments first
-      const commentsSnapshot = await getDocs(collection(db, 'posts', id, 'comments'));
-      const deletePromises = commentsSnapshot.docs.map(doc => deleteDoc(doc.ref));
-      await Promise.all(deletePromises);
-
-      // Delete the post
-      await deleteDoc(doc(db, 'posts', id));
+      const token = await currentUser.getIdToken();
+      await axios.delete(`${API_URL}/posts/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
       navigate(-1);
     } catch (err) {
@@ -267,6 +181,14 @@ const PostDetail = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Report Modal */}
+      <ReportModal
+        isOpen={showReportModal}
+        onClose={() => setShowReportModal(false)}
+        targetType="post"
+        targetId={id}
+      />
+
       {/* Post Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
@@ -277,22 +199,31 @@ const PostDetail = () => {
             ← 목록으로
           </button>
           
-          {currentUser && currentUser.uid === post.authorId && (
-            <div className="flex gap-2">
-              <Link
-                to={`/posts/${id}/edit`}
-                className="btn-secondary text-sm"
-              >
-                수정
-              </Link>
+          <div className="flex gap-2">
+            {currentUser && currentUser.uid === post.authorId ? (
+              <>
+                <Link
+                  to={`/posts/${id}/edit`}
+                  className="btn-secondary text-sm"
+                >
+                  수정
+                </Link>
+                <button
+                  onClick={handleDeletePost}
+                  className="btn-secondary text-sm text-red-600 hover:text-red-700"
+                >
+                  삭제
+                </button>
+              </>
+            ) : (
               <button
-                onClick={handleDeletePost}
-                className="btn-secondary text-sm text-red-600 hover:text-red-700"
+                onClick={() => setShowReportModal(true)}
+                className="text-sm text-gray-600 hover:text-red-600"
               >
-                삭제
+                🚨 신고
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <h1 className="text-3xl font-bold text-gray-900 mb-4">{post.title}</h1>
@@ -426,80 +357,22 @@ const PostDetail = () => {
           </div>
         )}
 
-        {/* Comments List */}
-        <div className="space-y-6">
+        {/* Comments List with Nested Replies */}
+        <div className="space-y-4">
           {comments.length === 0 ? (
             <p className="text-center text-gray-500 py-8">첫 댓글을 작성해보세요!</p>
           ) : (
-            comments.map((comment) => (
-              <div key={comment.id} className="flex gap-4">
-                {comment.userPhoto ? (
-                  <img src={comment.userPhoto} alt={comment.userName} className="w-10 h-10 rounded-full flex-shrink-0" />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
-                    <span className="text-gray-600 font-semibold">
-                      {comment.userName?.charAt(0) || '?'}
-                    </span>
-                  </div>
-                )}
-                
-                <div className="flex-1">
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium text-gray-900">{comment.userName}</span>
-                      <span className="text-sm text-gray-500">{formatDate(comment.createdAt)}</span>
-                    </div>
-                    
-                    {editingComment === comment.id ? (
-                      <div>
-                        <textarea
-                          value={editingText}
-                          onChange={(e) => setEditingText(e.target.value)}
-                          rows="3"
-                          className="input-field mb-2"
-                        />
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => handleUpdateComment(comment.id)}
-                            className="btn-primary text-sm"
-                          >
-                            저장
-                          </button>
-                          <button
-                            onClick={() => {
-                              setEditingComment(null);
-                              setEditingText('');
-                            }}
-                            className="btn-secondary text-sm"
-                          >
-                            취소
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <p className="text-gray-700 whitespace-pre-wrap">{comment.content}</p>
-                    )}
-                  </div>
-                  
-                  {currentUser && currentUser.uid === comment.userId && editingComment !== comment.id && (
-                    <div className="flex gap-2 mt-2">
-                      <button
-                        onClick={() => handleEditComment(comment)}
-                        className="text-sm text-gray-600 hover:text-gray-800"
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => handleDeleteComment(comment.id)}
-                        className="text-sm text-red-600 hover:text-red-800"
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))
+            comments
+              .filter(comment => !comment.parentId) // Only show top-level comments
+              .map((comment) => (
+                <Comment
+                  key={comment.id}
+                  comment={comment}
+                  postId={id}
+                  onDelete={handleDeleteComment}
+                  level={0}
+                />
+              ))
           )}
         </div>
       </div>

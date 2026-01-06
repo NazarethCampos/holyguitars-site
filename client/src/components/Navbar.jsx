@@ -42,9 +42,20 @@ const Navbar = () => {
             <Link to="/community" className="text-holy-ivory hover:text-holy-amber font-medium transition-colors duration-300">
               커뮤니티
             </Link>
+            <Link to="/search" className="text-holy-ivory hover:text-holy-amber font-medium transition-colors duration-300">
+              🔍 검색
+            </Link>
 
             {currentUser ? (
               <>
+                <Link to="/notifications" className="text-holy-ivory hover:text-holy-amber font-medium transition-colors duration-300">
+                  🔔 알림
+                </Link>
+                {(currentUser.role === 'admin' || currentUser.role === 'moderator') && (
+                  <Link to="/admin" className="text-holy-amber hover:text-holy-honey font-medium transition-colors duration-300">
+                    ⚙️ 관리자
+                  </Link>
+                )}
                 <Link to="/create-post" className="px-5 py-2 bg-holy-amber text-holy-espresso rounded-lg font-semibold hover:bg-holy-honey transition-colors duration-300 text-sm">
                   글쓰기
                 </Link>
@@ -126,9 +137,32 @@ const Navbar = () => {
             >
               커뮤니티
             </Link>
+            <Link
+              to="/search"
+              className="block px-3 py-2 rounded-md text-base font-medium text-holy-ivory hover:text-holy-amber hover:bg-holy-walnut-600 transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              🔍 검색
+            </Link>
 
             {currentUser ? (
               <>
+                <Link
+                  to="/notifications"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-holy-ivory hover:text-holy-amber hover:bg-holy-walnut-600 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  🔔 알림
+                </Link>
+                {(currentUser.role === 'admin' || currentUser.role === 'moderator') && (
+                  <Link
+                    to="/admin"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-holy-amber hover:bg-holy-walnut-600 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    ⚙️ 관리자
+                  </Link>
+                )}
                 <Link
                   to="/create-post"
                   className="block px-3 py-2 rounded-md text-base font-medium text-holy-amber hover:bg-holy-walnut-600 transition-colors"
