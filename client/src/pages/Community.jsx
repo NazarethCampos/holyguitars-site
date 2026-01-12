@@ -67,6 +67,21 @@ const Community = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // all, faith, free, tips
+  const [activeUsers, setActiveUsers] = useState([
+    { name: 'AcousticLover', online: true },
+    { name: 'GuitarMaster', online: true },
+    { name: 'FingerPicker', online: true },
+    { name: 'Finger335', online: true },
+  ]);
+  const [trendingTags, setTrendingTags] = useState([
+    '#통기타입문',
+    '#미테ID-28',
+    '#미테ID-28',
+    '#기타출고제',
+    '#기타입문투톤',
+    '#기타알포좌정',
+    '#그다포프리얼'
+  ]);
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -105,92 +120,188 @@ const Community = () => {
     }
   };
 
+  const getCategoryIcon = (subcategory) => {
+    const icons = {
+      '자유게시판': '💬',
+      '기타 리뷰': '🎸',
+      '연주 영상': '▶',
+      'Q&A': '❓'
+    };
+    return icons[subcategory] || '💬';
+  };
+
+  const getCategoryLabel = (subcategory) => {
+    return subcategory || '자유게시판';
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-        <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">커뮤니티</h1>
-          <p className="text-gray-600">신앙 이야기와 기타 정보를 자유롭게 나누세요</p>
-        </div>
-        {currentUser && (
-          <Link to="/create-post" className="btn-primary mt-4 md:mt-0">
-            + 글쓰기
-          </Link>
-        )}
-      </div>
+    <div className="bg-holy-cream min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex gap-8">
+          {/* Main Content - Left Side */}
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold text-holy-espresso mb-8">커뮤니티 게시판</h1>
+            
+            {/* Category Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              
+              {/* 자유게시판 */}
+              <Link to="/community?filter=자유게시판" className="bg-holy-ivory border-2 border-holy-cream-300 rounded-2xl p-8 hover:shadow-warm-lg transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="text-6xl">💬</div>
+                </div>
+                <h2 className="text-2xl font-bold text-holy-espresso mb-2">자유게시판</h2>
+                <p className="text-holy-walnut mb-3">
+                  Posts: 1,250
+                </p>
+                <p className="text-sm text-holy-walnut-600 mb-4">
+                  Recent: '새 기타 자랑합니다!'
+                </p>
+                <div className="flex items-center gap-2 text-xs text-holy-walnut mb-4">
+                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full" alt="user" />
+                  <span>by AcousticLover</span>
+                  <span className="text-holy-walnut-500">5 mins ago</span>
+                </div>
+                <button className="w-full bg-holy-honey text-holy-ivory px-4 py-2 rounded-lg font-medium hover:bg-holy-honey-600 transition-colors">
+                  바로가기
+                </button>
+              </Link>
 
-      {/* Filter Tabs */}
-      <div className="flex flex-wrap gap-2 mb-8 border-b border-gray-200">
-        <button
-          onClick={() => setFilter('all')}
-          className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === 'all'
-              ? 'text-primary-600 border-primary-600'
-              : 'text-gray-600 border-transparent hover:text-gray-900'
-          }`}
-        >
-          전체
-        </button>
-        <button
-          onClick={() => setFilter('신앙나눔')}
-          className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === '신앙나누'
-              ? 'text-primary-600 border-primary-600'
-              : 'text-gray-600 border-transparent hover:text-gray-900'
-          }`}
-        >
-          🙏 신앙나눔
-        </button>
-        <button
-          onClick={() => setFilter('자유게시판')}
-          className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === '자유게시판'
-              ? 'text-primary-600 border-primary-600'
-              : 'text-gray-600 border-transparent hover:text-gray-900'
-          }`}
-        >
-          💬 자유게시판
-        </button>
-        <button
-          onClick={() => setFilter('연주팁')}
-          className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-            filter === '연주팁'
-              ? 'text-primary-600 border-primary-600'
-              : 'text-gray-600 border-transparent hover:text-gray-900'
-          }`}
-        >
-          💡 연주 팁
-        </button>
-      </div>
+              {/* 기타 리뷰 */}
+              <Link to="/community?filter=기타 리뷰" className="bg-holy-ivory border-2 border-holy-cream-300 rounded-2xl p-8 hover:shadow-warm-lg transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="text-6xl">🎸</div>
+                </div>
+                <h2 className="text-2xl font-bold text-holy-espresso mb-2">기타 리뷰</h2>
+                <p className="text-holy-walnut mb-3">
+                  Posts: 450
+                </p>
+                <p className="text-sm text-holy-walnut-600 mb-4">
+                  Recent: '테일러 814ce 실증 리뷰'
+                </p>
+                <div className="flex items-center gap-2 text-xs text-holy-walnut mb-4">
+                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full" alt="user" />
+                  <span>by GuitarMaster</span>
+                  <span className="text-holy-walnut-500">2 hours ago</span>
+                </div>
+                <button className="w-full bg-holy-honey text-holy-ivory px-4 py-2 rounded-lg font-medium hover:bg-holy-honey-600 transition-colors">
+                  바로가기 (Go)
+                </button>
+              </Link>
 
-      {/* Posts List */}
-      {loading ? (
-        <div className="flex justify-center items-center py-20">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+              {/* 연주 영상 */}
+              <Link to="/community?filter=연주 영상" className="bg-holy-ivory border-2 border-holy-cream-300 rounded-2xl p-8 hover:shadow-warm-lg transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="text-6xl">▶</div>
+                </div>
+                <h2 className="text-2xl font-bold text-holy-espresso mb-2">연주 영상</h2>
+                <p className="text-holy-walnut mb-3">
+                  Posts: 890
+                </p>
+                <p className="text-sm text-holy-walnut-600 mb-4">
+                  Recent: '핑거스타일 커버 궁금'
+                </p>
+                <div className="flex items-center gap-2 text-xs text-holy-walnut mb-4">
+                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full" alt="user" />
+                  <span>by FingerPicker</span>
+                  <span className="text-holy-walnut-500">1 day ago</span>
+                </div>
+                <button className="w-full bg-holy-honey text-holy-ivory px-4 py-2 rounded-lg font-medium hover:bg-holy-honey-600 transition-colors">
+                  바로가기 (Go)
+                </button>
+              </Link>
+
+              {/* Q&A */}
+              <Link to="/community?filter=Q&A" className="bg-holy-ivory border-2 border-holy-cream-300 rounded-2xl p-8 hover:shadow-warm-lg transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="text-6xl">❓</div>
+                </div>
+                <h2 className="text-2xl font-bold text-holy-espresso mb-2">Q&A</h2>
+                <p className="text-holy-walnut mb-3">
+                  Posts: 315
+                </p>
+                <p className="text-sm text-holy-walnut-600 mb-4">
+                  Recent: '초보자용 기타 추천 부탁드립니다'
+                </p>
+                <div className="flex items-center gap-2 text-xs text-holy-walnut mb-4">
+                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full" alt="user" />
+                  <span>by NewbieGuitarist</span>
+                  <span className="text-holy-walnut-500">30 mins ago</span>
+                </div>
+                <button className="w-full bg-holy-honey text-holy-ivory px-4 py-2 rounded-lg font-medium hover:bg-holy-honey-600 transition-colors">
+                  바로가기 (Go)
+                </button>
+              </Link>
+
+            </div>
+          </div>
+
+          {/* Right Sidebar */}
+          <div className="w-full md:w-80 space-y-6">
+            
+            {/* 활동 중인 멤버 */}
+            <div className="bg-holy-ivory rounded-xl p-6 shadow-warm border border-holy-cream-300">
+              <h3 className="text-xl font-bold text-holy-espresso mb-4">활동 중인 멤버</h3>
+              <div className="space-y-3">
+                {activeUsers.map((user, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <div className="relative">
+                      <img 
+                        src="/assets/logos/logo-symbol.png" 
+                        className="w-10 h-10 rounded-full"
+                        alt={user.name}
+                      />
+                      {user.online && (
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                      )}
+                    </div>
+                    <span className="text-holy-espresso font-medium">{user.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 인기 토픽 */}
+            <div className="bg-holy-ivory rounded-xl p-6 shadow-warm border border-holy-cream-300">
+              <h3 className="text-xl font-bold text-holy-espresso mb-4">인기 토픽</h3>
+              <div className="flex flex-wrap gap-2">
+                {trendingTags.map((tag, idx) => (
+                  <span 
+                    key={idx}
+                    className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      idx === 0 ? 'bg-holy-amber-100 text-holy-amber-700' :
+                      idx === 1 || idx === 2 ? 'bg-holy-honey-100 text-holy-honey-700' :
+                      'bg-holy-walnut-100 text-holy-walnut-700'
+                    }`}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* 커뮤니티 통계 */}
+            <div className="bg-holy-ivory rounded-xl p-6 shadow-warm border border-holy-cream-300">
+              <h3 className="text-xl font-bold text-holy-espresso mb-4">커뮤니티 통계</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-holy-walnut">Total members</span>
+                  <span className="font-bold text-holy-espresso">5,550</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-holy-walnut">Total posts</span>
+                  <span className="font-bold text-holy-espresso">1,832</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-holy-walnut">Online users</span>
+                  <span className="font-bold text-green-600">12</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
-      ) : posts.length > 0 ? (
-        <div className="space-y-4">
-          {posts.map(post => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-20">
-          <div className="text-6xl mb-4">💬</div>
-          <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-            아직 게시글이 없습니다
-          </h3>
-          <p className="text-gray-600 mb-6">
-            첫 번째 게시글을 작성해보세요!
-          </p>
-          {currentUser && (
-            <Link to="/create-post" className="btn-primary">
-              글쓰기
-            </Link>
-          )}
-        </div>
-      )}
+      </div>
     </div>
   );
 };
