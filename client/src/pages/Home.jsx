@@ -1,51 +1,224 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { collection, getDocs, query, orderBy, limit, where } from 'firebase/firestore';
+import { db } from '../services/firebase';
 
 const Home = () => {
   const { currentUser } = useAuth();
+  const [featuredPosts, setFeaturedPosts] = useState([]);
+  const [popularDiscussions, setPopularDiscussions] = useState([]);
+  const [recentVideos, setRecentVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchHomeData();
+  }, []);
+
+  const fetchHomeData = async () => {
+    try {
+      // Featured Posts (equipment posts)
+      const featuredQuery = query(
+        collection(db, 'posts'),
+        where('category', '==', 'equipment'),
+        orderBy('createdAt', 'desc'),
+        limit(3)
+      );
+      const featuredSnapshot = await getDocs(featuredQuery);
+      const featuredData = featuredSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setFeaturedPosts(featuredData);
+
+      // Popular Discussions (community posts with most likes)
+      const discussionsQuery = query(
+        collection(db, 'posts'),
+        where('category', '==', 'community'),
+        orderBy('likes', 'desc'),
+        limit(3)
+      );
+      const discussionsSnapshot = await getDocs(discussionsQuery);
+      const discussionsData = discussionsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setPopularDiscussions(discussionsData);
+
+      // Recent Videos (video posts)
+      const videosQuery = query(
+        collection(db, 'posts'),
+        where('category', '==', 'video'),
+        orderBy('createdAt', 'desc'),
+        limit(3)
+      );
+      const videosSnapshot = await getDocs(videosQuery);
+      const videosData = videosSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setRecentVideos(videosData);
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching home data:', error);
+      setLoading(false);
+    }
+  };
+
+  const getYouTubeThumbnail = (url) => {
+    if (!url) return null;
+    const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
+    return videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : null;
+  };
 
   return (
-    <div className="bg-gradient-to-b from-holy-cream to-holy-ivory">
-      {/* Hero Section with Banner */}
+    <div className="bg-holy-cream min-h-screen">
+      {/* Hero Section with Banner - Matching Mockup Design */}
       <section 
-        className="relative bg-cover bg-center min-h-[600px] flex items-center"
+        className="relative bg-cover bg-center h-[500px] flex items-center"
         style={{ 
           backgroundImage: 'url(/assets/banners/banner-community.png)',
-          backgroundBlendMode: 'overlay'
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-holy-walnut/80 to-holy-walnut/60"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-holy-ivory mb-6 drop-shadow-lg">
-            찬양과 연주로 하나님을 예배하는
-            <span className="block text-holy-amber mt-3">기타 애호가들의 특별한 공간</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-holy-cream mb-10 max-w-3xl mx-auto drop-shadow">
-            기타를 사랑하는 크리스천들이 모여 연주 영상을 공유하고,
-            장비를 소개하며, 서로의 신앙과 음악을 나누는 커뮤니티입니다.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            {currentUser ? (
-              <Link to="/create-post" className="inline-block px-8 py-4 bg-holy-amber hover:bg-holy-honey text-holy-espresso rounded-lg font-bold text-lg shadow-warm-lg transition-all duration-300 transform hover:scale-105">
-                지금 바로 시작하기
-              </Link>
-            ) : (
-              <>
-                <Link to="/signup" className="inline-block px-8 py-4 bg-holy-amber hover:bg-holy-honey text-holy-espresso rounded-lg font-bold text-lg shadow-warm-lg transition-all duration-300 transform hover:scale-105">
-                  무료로 시작하기
-                </Link>
-                <Link to="/videos" className="inline-block px-8 py-4 border-2 border-holy-ivory text-holy-ivory hover:bg-holy-ivory hover:text-holy-walnut rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105">
-                  둘러보기
-                </Link>
-              </>
-            )}
+        <div className="absolute inset-0 bg-gradient-to-r from-holy-walnut/70 via-holy-walnut/50 to-transparent"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="text-center">
+            <h1 className="font-serif text-5xl md:text-6xl font-bold text-holy-ivory mb-4 drop-shadow-lg">
+              홀리기타
+              <span className="block text-3xl md:text-4xl mt-2 italic">HolyGuitar</span>
+            </h1>
+            <p className="text-2xl md:text-3xl text-holy-cream font-medium drop-shadow">
+              어쿠스틱 기타 커뮤니티
+            </p>
           </div>
         </div>
       </section>
 
+      {/* Three Column Section - Featured Posts, Popular Discussions, Recent Videos */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          {/* Featured Posts - Holy Walnut Background */}
+          <div className="bg-holy-walnut rounded-xl p-6 shadow-warm-lg">
+            <h2 className="text-2xl font-bold text-holy-ivory mb-6">Featured Posts</h2>
+            <div className="space-y-4">
+              {loading ? (
+                <div className="text-holy-cream text-center py-8">로딩 중...</div>
+              ) : featuredPosts.length > 0 ? (
+                featuredPosts.map((post) => (
+                  <Link 
+                    key={post.id} 
+                    to={`/post/${post.id}`}
+                    className="block bg-holy-walnut-700 rounded-lg p-4 hover:bg-holy-walnut-600 transition-colors"
+                  >
+                    <div className="flex gap-3">
+                      {post.imageUrl && (
+                        <img 
+                          src={post.imageUrl} 
+                          alt={post.title}
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                      )}
+                      <div className="flex-1">
+                        <h3 className="text-holy-ivory font-medium mb-1 line-clamp-2">{post.title}</h3>
+                        <div className="flex items-center gap-2 text-xs text-holy-cream">
+                          <img 
+                            src={post.authorPhoto || '/assets/logos/logo-symbol.png'} 
+                            alt={post.authorName}
+                            className="w-5 h-5 rounded-full"
+                          />
+                          <span>{post.authorName}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <div className="text-holy-cream text-center py-8">아직 게시글이 없습니다</div>
+              )}
+            </div>
+          </div>
+
+          {/* Popular Discussions - Holy Amber Background */}
+          <div className="bg-holy-amber rounded-xl p-6 shadow-warm-lg">
+            <h2 className="text-2xl font-bold text-holy-espresso mb-6">Popular Discussions</h2>
+            <div className="space-y-4">
+              {loading ? (
+                <div className="text-holy-espresso text-center py-8">로딩 중...</div>
+              ) : popularDiscussions.length > 0 ? (
+                popularDiscussions.map((post) => (
+                  <Link 
+                    key={post.id} 
+                    to={`/post/${post.id}`}
+                    className="block bg-holy-amber-300 rounded-lg p-4 hover:bg-holy-amber-400 transition-colors"
+                  >
+                    <div className="flex gap-3">
+                      {post.imageUrl && (
+                        <img 
+                          src={post.imageUrl} 
+                          alt={post.title}
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                      )}
+                      <div className="flex-1">
+                        <h3 className="text-holy-espresso font-medium mb-1 line-clamp-2">{post.title}</h3>
+                        <div className="flex items-center gap-2 text-xs text-holy-walnut">
+                          <img 
+                            src={post.authorPhoto || '/assets/logos/logo-symbol.png'} 
+                            alt={post.authorName}
+                            className="w-5 h-5 rounded-full"
+                          />
+                          <span>{post.authorName}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <div className="text-holy-espresso text-center py-8">아직 게시글이 없습니다</div>
+              )}
+            </div>
+          </div>
+
+          {/* Recent Videos - Holy Ivory Background */}
+          <div className="bg-holy-ivory rounded-xl p-6 shadow-warm-lg border border-holy-cream-300">
+            <h2 className="text-2xl font-bold text-holy-espresso mb-6">Recent Videos</h2>
+            <div className="space-y-4">
+              {loading ? (
+                <div className="text-holy-walnut text-center py-8">로딩 중...</div>
+              ) : recentVideos.length > 0 ? (
+                recentVideos.map((post) => (
+                  <Link 
+                    key={post.id} 
+                    to={`/post/${post.id}`}
+                    className="block bg-white rounded-lg overflow-hidden hover:shadow-warm transition-shadow"
+                  >
+                    <div className="relative">
+                      <img 
+                        src={getYouTubeThumbnail(post.videoUrl) || '/assets/logos/logo-symbol.png'} 
+                        alt={post.title}
+                        className="w-full h-32 object-cover"
+                      />
+                      <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
+                        2:36
+                      </div>
+                    </div>
+                    <div className="p-3">
+                      <h3 className="text-holy-espresso font-medium mb-1 text-sm line-clamp-2">{post.title}</h3>
+                      <div className="flex items-center gap-2 text-xs text-holy-walnut">
+                        <img 
+                          src={post.authorPhoto || '/assets/logos/logo-symbol.png'} 
+                          alt={post.authorName}
+                          className="w-4 h-4 rounded-full"
+                        />
+                        <span>{post.authorName}</span>
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <div className="text-holy-walnut text-center py-8">아직 영상이 없습니다</div>
+              )}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* Features Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-4xl md:text-5xl font-bold text-center text-holy-espresso mb-4">
           특별한 기능들
         </h2>
