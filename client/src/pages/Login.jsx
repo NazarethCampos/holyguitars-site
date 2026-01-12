@@ -115,22 +115,22 @@ const Login = () => {
       </div>
 
       {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-holy-ivory px-6 sm:px-12 lg:px-16">
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-white px-6 sm:px-12 lg:px-16">
         <div className="max-w-md w-full space-y-8">
           {/* Logo and Title */}
           <div className="text-center">
             <img 
               src="/assets/logos/logo-symbol.png" 
               alt="홀리기타" 
-              className="mx-auto h-20 w-auto mb-6"
+              className="mx-auto h-20 w-auto mb-6 drop-shadow-lg"
             />
-            <h1 className="font-serif text-3xl font-bold text-holy-espresso mb-2">
+            <h1 className="font-serif text-3xl font-bold text-gray-900 mb-2">
               홀리기타
             </h1>
-            <p className="text-lg text-holy-walnut mb-8">
+            <p className="text-lg text-gray-600 mb-8">
               HolyGuitar
             </p>
-            <h2 className="text-2xl font-bold text-holy-espresso">
+            <h2 className="text-2xl font-bold text-gray-900">
               환영합니다
             </h2>
           </div>
@@ -138,7 +138,7 @@ const Login = () => {
           {/* Login Form */}
           <div className="mt-8 space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+              <div className="bg-red-50 border-2 border-red-400 text-red-700 px-4 py-3 rounded-lg font-medium">
                 {error}
               </div>
             )}
@@ -150,7 +150,7 @@ const Login = () => {
                   name="email"
                   type="email"
                   required
-                  className="w-full px-4 py-3 bg-white border-2 border-holy-cream-300 rounded-lg focus:border-holy-amber focus:outline-none transition-colors text-holy-espresso placeholder-holy-walnut-400"
+                  className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all text-gray-900 placeholder-gray-500"
                   placeholder="이메일"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -163,7 +163,7 @@ const Login = () => {
                   name="password"
                   type="password"
                   required
-                  className="w-full px-4 py-3 bg-white border-2 border-holy-cream-300 rounded-lg focus:border-holy-amber focus:outline-none transition-colors text-holy-espresso placeholder-holy-walnut-400"
+                  className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:bg-white focus:outline-none transition-all text-gray-900 placeholder-gray-500"
                   placeholder="비밀번호"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -174,7 +174,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 bg-holy-amber hover:bg-holy-honey text-holy-espresso rounded-lg font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-warm"
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sharp"
                 >
                   {loading ? '로그인 중...' : '로그인'}
                 </button>
@@ -185,9 +185,9 @@ const Login = () => {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 text-holy-amber focus:ring-holy-amber border-holy-cream-300 rounded"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-holy-walnut">
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                   회원가입이 통생에 보세요.
                 </label>
               </div>
@@ -197,36 +197,30 @@ const Login = () => {
             <div className="mt-6 mb-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-holy-cream-300" />
+                  <div className="w-full border-t border-gray-300" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">또는</span>
                 </div>
               </div>
             </div>
 
             {/* Additional Links */}
-            <div className="space-y-3 text-center">
-              <p className="text-sm text-holy-walnut">
-                <Link to="/signup" className="text-holy-espresso hover:text-holy-amber font-medium">
-                  이름
-                </Link>
-              </p>
-              <p className="text-sm text-holy-walnut">
-                <a href="#" className="text-holy-espresso hover:text-holy-amber font-medium">
-                  비밀번호 확인
-                </a>
-              </p>
-              <p className="text-sm text-holy-walnut">
-                <Link to="/signup" className="text-holy-espresso hover:text-holy-amber font-medium">
-                  회원가입
-                </Link>
-              </p>
+            <div className="flex justify-between text-sm text-center mb-6">
+              <Link to="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
+                회원가입
+              </Link>
+              <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">
+                비밀번호 찾기
+              </a>
             </div>
 
             {/* Social Login */}
-            <div className="mt-8 space-y-3">
+            <div className="space-y-3">
               <button
                 onClick={handleGoogleSignIn}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 px-6 py-3 border-2 border-holy-cream-300 rounded-lg bg-white text-holy-espresso hover:bg-holy-cream-100 font-medium transition-colors disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-3 px-6 py-3 border-2 border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 font-medium transition-all disabled:opacity-50 shadow-sm"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="#EA4335" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -239,10 +233,10 @@ const Login = () => {
 
               <button
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 px-6 py-3 border-2 border-holy-cream-300 rounded-lg bg-white text-holy-espresso hover:bg-holy-cream-100 font-medium transition-colors disabled:opacity-50"
-                style={{ backgroundColor: '#FF6B00' }}
+                className="w-full flex items-center justify-center gap-3 px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50 shadow-sm"
+                style={{ backgroundColor: '#1877F2', border: 'none' }}
               >
-                <span className="text-white font-bold">F</span>
+                <span className="text-white font-bold text-xl">f</span>
                 <span className="text-white">Facebook</span>
               </button>
 
@@ -250,11 +244,11 @@ const Login = () => {
                 <button
                   onClick={handleNaverSignIn}
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-3 px-6 py-3 border-2 border-holy-cream-300 rounded-lg font-medium transition-colors disabled:opacity-50"
-                  style={{ backgroundColor: '#03C75A', color: '#ffffff' }}
+                  className="w-full flex items-center justify-center gap-3 px-6 py-3 rounded-lg font-medium transition-all disabled:opacity-50 shadow-sm"
+                  style={{ backgroundColor: '#03C75A', border: 'none' }}
                 >
-                  <span className="font-bold">N</span>
-                  <span>Naver</span>
+                  <span className="text-white font-bold text-xl">N</span>
+                  <span className="text-white">Naver</span>
                 </button>
                 <div id="naverIdLogin" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden' }}></div>
               </div>

@@ -64,7 +64,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-holy-cream min-h-screen">
+    <div className="bg-gray-50 min-h-screen">
       {/* Hero Section with Banner - Matching Mockup Design */}
       <section 
         className="relative bg-cover bg-center h-[500px] flex items-center"
@@ -90,30 +90,30 @@ const Home = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          {/* Featured Posts - Holy Walnut Background */}
-          <div className="bg-holy-walnut rounded-xl p-6 shadow-warm-lg">
-            <h2 className="text-2xl font-bold text-holy-ivory mb-6">Featured Posts</h2>
+          {/* Featured Posts - White Card with Border */}
+          <div className="bg-white rounded-xl p-6 shadow-sharp-lg border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Posts</h2>
             <div className="space-y-4">
               {loading ? (
-                <div className="text-holy-cream text-center py-8">로딩 중...</div>
+                <div className="text-gray-500 text-center py-8">로딩 중...</div>
               ) : featuredPosts.length > 0 ? (
                 featuredPosts.map((post) => (
                   <Link 
                     key={post.id} 
                     to={`/post/${post.id}`}
-                    className="block bg-holy-walnut-700 rounded-lg p-4 hover:bg-holy-walnut-600 transition-colors"
+                    className="block bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors border border-gray-200"
                   >
                     <div className="flex gap-3">
                       {post.imageUrl && (
                         <img 
                           src={post.imageUrl} 
                           alt={post.title}
-                          className="w-20 h-20 object-cover rounded-lg"
+                          className="w-20 h-20 object-cover rounded-lg shadow-sm"
                         />
                       )}
                       <div className="flex-1">
-                        <h3 className="text-holy-ivory font-medium mb-1 line-clamp-2">{post.title}</h3>
-                        <div className="flex items-center gap-2 text-xs text-holy-cream">
+                        <h3 className="text-gray-900 font-medium mb-1 line-clamp-2">{post.title}</h3>
+                        <div className="flex items-center gap-2 text-xs text-gray-600">
                           <img 
                             src={post.authorPhoto || '/assets/logos/logo-symbol.png'} 
                             alt={post.authorName}
@@ -126,35 +126,38 @@ const Home = () => {
                   </Link>
                 ))
               ) : (
-                <div className="text-holy-cream text-center py-8">아직 게시글이 없습니다</div>
+                <div className="text-gray-500 text-center py-8">아직 게시글이 없습니다</div>
               )}
             </div>
           </div>
 
-          {/* Popular Discussions - Holy Amber Background */}
-          <div className="bg-holy-amber rounded-xl p-6 shadow-warm-lg">
-            <h2 className="text-2xl font-bold text-holy-espresso mb-6">Popular Discussions</h2>
+          {/* Popular Discussions - White Card with Accent Border */}
+          <div className="bg-white rounded-xl p-6 shadow-sharp-lg border-2 border-amber-500">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+              <span className="bg-amber-500 text-white px-3 py-1 rounded-lg text-sm mr-2">HOT</span>
+              Popular Discussions
+            </h2>
             <div className="space-y-4">
               {loading ? (
-                <div className="text-holy-espresso text-center py-8">로딩 중...</div>
+                <div className="text-gray-500 text-center py-8">로딩 중...</div>
               ) : popularDiscussions.length > 0 ? (
                 popularDiscussions.map((post) => (
                   <Link 
                     key={post.id} 
                     to={`/post/${post.id}`}
-                    className="block bg-holy-amber-300 rounded-lg p-4 hover:bg-holy-amber-400 transition-colors"
+                    className="block bg-amber-50 rounded-lg p-4 hover:bg-amber-100 transition-colors border border-amber-200"
                   >
                     <div className="flex gap-3">
                       {post.imageUrl && (
                         <img 
                           src={post.imageUrl} 
                           alt={post.title}
-                          className="w-20 h-20 object-cover rounded-lg"
+                          className="w-20 h-20 object-cover rounded-lg shadow-sm"
                         />
                       )}
                       <div className="flex-1">
-                        <h3 className="text-holy-espresso font-medium mb-1 line-clamp-2">{post.title}</h3>
-                        <div className="flex items-center gap-2 text-xs text-holy-walnut">
+                        <h3 className="text-gray-900 font-medium mb-1 line-clamp-2">{post.title}</h3>
+                        <div className="flex items-center gap-2 text-xs text-gray-600">
                           <img 
                             src={post.authorPhoto || '/assets/logos/logo-symbol.png'} 
                             alt={post.authorName}
@@ -167,23 +170,23 @@ const Home = () => {
                   </Link>
                 ))
               ) : (
-                <div className="text-holy-espresso text-center py-8">아직 게시글이 없습니다</div>
+                <div className="text-gray-500 text-center py-8">아직 게시글이 없습니다</div>
               )}
             </div>
           </div>
 
-          {/* Recent Videos - Holy Ivory Background */}
-          <div className="bg-holy-ivory rounded-xl p-6 shadow-warm-lg border border-holy-cream-300">
-            <h2 className="text-2xl font-bold text-holy-espresso mb-6">Recent Videos</h2>
+          {/* Recent Videos - White Card */}
+          <div className="bg-white rounded-xl p-6 shadow-sharp-lg border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Recent Videos</h2>
             <div className="space-y-4">
               {loading ? (
-                <div className="text-holy-walnut text-center py-8">로딩 중...</div>
+                <div className="text-gray-500 text-center py-8">로딩 중...</div>
               ) : recentVideos.length > 0 ? (
                 recentVideos.map((post) => (
                   <Link 
                     key={post.id} 
                     to={`/post/${post.id}`}
-                    className="block bg-white rounded-lg overflow-hidden hover:shadow-warm transition-shadow"
+                    className="block bg-gray-50 rounded-lg overflow-hidden hover:shadow-sharp transition-shadow border border-gray-200"
                   >
                     <div className="relative">
                       <img 
@@ -191,13 +194,16 @@ const Home = () => {
                         alt={post.title}
                         className="w-full h-32 object-cover"
                       />
-                      <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
+                      <div className="absolute bottom-2 right-2 bg-black bg-opacity-90 text-white text-xs px-2 py-1 rounded font-semibold">
                         2:36
                       </div>
+                      <div className="absolute top-2 left-2">
+                        <span className="bg-red-600 text-white text-xs px-2 py-1 rounded font-semibold">VIDEO</span>
+                      </div>
                     </div>
-                    <div className="p-3">
-                      <h3 className="text-holy-espresso font-medium mb-1 text-sm line-clamp-2">{post.title}</h3>
-                      <div className="flex items-center gap-2 text-xs text-holy-walnut">
+                    <div className="p-3 bg-white">
+                      <h3 className="text-gray-900 font-medium mb-1 text-sm line-clamp-2">{post.title}</h3>
+                      <div className="flex items-center gap-2 text-xs text-gray-600">
                         <img 
                           src={post.authorPhoto || '/assets/logos/logo-symbol.png'} 
                           alt={post.authorName}
@@ -209,7 +215,7 @@ const Home = () => {
                   </Link>
                 ))
               ) : (
-                <div className="text-holy-walnut text-center py-8">아직 영상이 없습니다</div>
+                <div className="text-gray-500 text-center py-8">아직 영상이 없습니다</div>
               )}
             </div>
           </div>

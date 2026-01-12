@@ -135,101 +135,101 @@ const Community = () => {
   };
 
   return (
-    <div className="bg-holy-cream min-h-screen">
+    <div className="bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
           {/* Main Content - Left Side */}
           <div className="flex-1">
-            <h1 className="text-3xl font-bold text-holy-espresso mb-8">커뮤니티 게시판</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-8">커뮤니티 게시판</h1>
             
             {/* Category Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               
               {/* 자유게시판 */}
-              <Link to="/community?filter=자유게시판" className="bg-holy-ivory border-2 border-holy-cream-300 rounded-2xl p-8 hover:shadow-warm-lg transition-all">
+              <Link to="/community?filter=자유게시판" className="bg-white border-2 border-gray-200 rounded-2xl p-8 hover:shadow-sharp-lg hover:border-blue-300 transition-all">
                 <div className="flex items-start justify-between mb-4">
                   <div className="text-6xl">💬</div>
                 </div>
-                <h2 className="text-2xl font-bold text-holy-espresso mb-2">자유게시판</h2>
-                <p className="text-holy-walnut mb-3">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">자유게시판</h2>
+                <p className="text-gray-600 mb-3 font-semibold">
                   Posts: 1,250
                 </p>
-                <p className="text-sm text-holy-walnut-600 mb-4">
+                <p className="text-sm text-gray-700 mb-4 font-medium">
                   Recent: '새 기타 자랑합니다!'
                 </p>
-                <div className="flex items-center gap-2 text-xs text-holy-walnut mb-4">
-                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full" alt="user" />
+                <div className="flex items-center gap-2 text-xs text-gray-600 mb-4">
+                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full border border-gray-300" alt="user" />
                   <span>by AcousticLover</span>
-                  <span className="text-holy-walnut-500">5 mins ago</span>
+                  <span className="text-gray-500">5 mins ago</span>
                 </div>
-                <button className="w-full bg-holy-honey text-holy-ivory px-4 py-2 rounded-lg font-medium hover:bg-holy-honey-600 transition-colors">
+                <button className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm">
                   바로가기
                 </button>
               </Link>
 
               {/* 기타 리뷰 */}
-              <Link to="/community?filter=기타 리뷰" className="bg-holy-ivory border-2 border-holy-cream-300 rounded-2xl p-8 hover:shadow-warm-lg transition-all">
+              <Link to="/community?filter=기타 리뷰" className="bg-white border-2 border-gray-200 rounded-2xl p-8 hover:shadow-sharp-lg hover:border-amber-500 transition-all">
                 <div className="flex items-start justify-between mb-4">
                   <div className="text-6xl">🎸</div>
                 </div>
-                <h2 className="text-2xl font-bold text-holy-espresso mb-2">기타 리뷰</h2>
-                <p className="text-holy-walnut mb-3">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">기타 리뷰</h2>
+                <p className="text-gray-600 mb-3 font-semibold">
                   Posts: 450
                 </p>
-                <p className="text-sm text-holy-walnut-600 mb-4">
+                <p className="text-sm text-gray-700 mb-4 font-medium">
                   Recent: '테일러 814ce 실증 리뷰'
                 </p>
-                <div className="flex items-center gap-2 text-xs text-holy-walnut mb-4">
-                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full" alt="user" />
+                <div className="flex items-center gap-2 text-xs text-gray-600 mb-4">
+                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full border border-gray-300" alt="user" />
                   <span>by GuitarMaster</span>
-                  <span className="text-holy-walnut-500">2 hours ago</span>
+                  <span className="text-gray-500">2 hours ago</span>
                 </div>
-                <button className="w-full bg-holy-honey text-holy-ivory px-4 py-2 rounded-lg font-medium hover:bg-holy-honey-600 transition-colors">
-                  바로가기 (Go)
+                <button className="w-full bg-amber-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-amber-700 transition-colors shadow-sm">
+                  바로가기
                 </button>
               </Link>
 
               {/* 연주 영상 */}
-              <Link to="/community?filter=연주 영상" className="bg-holy-ivory border-2 border-holy-cream-300 rounded-2xl p-8 hover:shadow-warm-lg transition-all">
+              <Link to="/community?filter=연주 영상" className="bg-white border-2 border-gray-200 rounded-2xl p-8 hover:shadow-sharp-lg hover:border-red-400 transition-all">
                 <div className="flex items-start justify-between mb-4">
                   <div className="text-6xl">▶</div>
                 </div>
-                <h2 className="text-2xl font-bold text-holy-espresso mb-2">연주 영상</h2>
-                <p className="text-holy-walnut mb-3">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">연주 영상</h2>
+                <p className="text-gray-600 mb-3 font-semibold">
                   Posts: 890
                 </p>
-                <p className="text-sm text-holy-walnut-600 mb-4">
+                <p className="text-sm text-gray-700 mb-4 font-medium">
                   Recent: '핑거스타일 커버 궁금'
                 </p>
-                <div className="flex items-center gap-2 text-xs text-holy-walnut mb-4">
-                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full" alt="user" />
+                <div className="flex items-center gap-2 text-xs text-gray-600 mb-4">
+                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full border border-gray-300" alt="user" />
                   <span>by FingerPicker</span>
-                  <span className="text-holy-walnut-500">1 day ago</span>
+                  <span className="text-gray-500">1 day ago</span>
                 </div>
-                <button className="w-full bg-holy-honey text-holy-ivory px-4 py-2 rounded-lg font-medium hover:bg-holy-honey-600 transition-colors">
-                  바로가기 (Go)
+                <button className="w-full bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors shadow-sm">
+                  바로가기
                 </button>
               </Link>
 
               {/* Q&A */}
-              <Link to="/community?filter=Q&A" className="bg-holy-ivory border-2 border-holy-cream-300 rounded-2xl p-8 hover:shadow-warm-lg transition-all">
+              <Link to="/community?filter=Q&A" className="bg-white border-2 border-gray-200 rounded-2xl p-8 hover:shadow-sharp-lg hover:border-green-400 transition-all">
                 <div className="flex items-start justify-between mb-4">
                   <div className="text-6xl">❓</div>
                 </div>
-                <h2 className="text-2xl font-bold text-holy-espresso mb-2">Q&A</h2>
-                <p className="text-holy-walnut mb-3">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Q&A</h2>
+                <p className="text-gray-600 mb-3 font-semibold">
                   Posts: 315
                 </p>
-                <p className="text-sm text-holy-walnut-600 mb-4">
+                <p className="text-sm text-gray-700 mb-4 font-medium">
                   Recent: '초보자용 기타 추천 부탁드립니다'
                 </p>
-                <div className="flex items-center gap-2 text-xs text-holy-walnut mb-4">
-                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full" alt="user" />
+                <div className="flex items-center gap-2 text-xs text-gray-600 mb-4">
+                  <img src="/assets/logos/logo-symbol.png" className="w-5 h-5 rounded-full border border-gray-300" alt="user" />
                   <span>by NewbieGuitarist</span>
-                  <span className="text-holy-walnut-500">30 mins ago</span>
+                  <span className="text-gray-500">30 mins ago</span>
                 </div>
-                <button className="w-full bg-holy-honey text-holy-ivory px-4 py-2 rounded-lg font-medium hover:bg-holy-honey-600 transition-colors">
-                  바로가기 (Go)
+                <button className="w-full bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors shadow-sm">
+                  바로가기
                 </button>
               </Link>
 
@@ -240,38 +240,38 @@ const Community = () => {
           <div className="w-full md:w-80 space-y-6">
             
             {/* 활동 중인 멤버 */}
-            <div className="bg-holy-ivory rounded-xl p-6 shadow-warm border border-holy-cream-300">
-              <h3 className="text-xl font-bold text-holy-espresso mb-4">활동 중인 멤버</h3>
+            <div className="bg-white rounded-xl p-6 shadow-sharp border border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">활동 중인 멤버</h3>
               <div className="space-y-3">
                 {activeUsers.map((user, idx) => (
-                  <div key={idx} className="flex items-center gap-3">
+                  <div key={idx} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
                     <div className="relative">
                       <img 
                         src="/assets/logos/logo-symbol.png" 
-                        className="w-10 h-10 rounded-full"
+                        className="w-10 h-10 rounded-full border-2 border-gray-200"
                         alt={user.name}
                       />
                       {user.online && (
                         <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
                       )}
                     </div>
-                    <span className="text-holy-espresso font-medium">{user.name}</span>
+                    <span className="text-gray-900 font-medium">{user.name}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* 인기 토픽 */}
-            <div className="bg-holy-ivory rounded-xl p-6 shadow-warm border border-holy-cream-300">
-              <h3 className="text-xl font-bold text-holy-espresso mb-4">인기 토픽</h3>
+            <div className="bg-white rounded-xl p-6 shadow-sharp border border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">인기 토픽</h3>
               <div className="flex flex-wrap gap-2">
                 {trendingTags.map((tag, idx) => (
                   <span 
                     key={idx}
                     className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      idx === 0 ? 'bg-holy-amber-100 text-holy-amber-700' :
-                      idx === 1 || idx === 2 ? 'bg-holy-honey-100 text-holy-honey-700' :
-                      'bg-holy-walnut-100 text-holy-walnut-700'
+                      idx === 0 ? 'bg-red-100 text-red-700 border border-red-300' :
+                      idx === 1 || idx === 2 ? 'bg-amber-100 text-amber-700 border border-amber-300' :
+                      'bg-gray-100 text-gray-700 border border-gray-300'
                     }`}
                   >
                     {tag}
@@ -281,20 +281,20 @@ const Community = () => {
             </div>
 
             {/* 커뮤니티 통계 */}
-            <div className="bg-holy-ivory rounded-xl p-6 shadow-warm border border-holy-cream-300">
-              <h3 className="text-xl font-bold text-holy-espresso mb-4">커뮤니티 통계</h3>
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-6 shadow-sharp-lg text-white">
+              <h3 className="text-xl font-bold mb-4">커뮤니티 통계</h3>
               <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-holy-walnut">Total members</span>
-                  <span className="font-bold text-holy-espresso">5,550</span>
+                <div className="flex justify-between items-center py-2 border-b border-blue-500">
+                  <span className="text-blue-100">Total members</span>
+                  <span className="font-bold text-2xl">5,550</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-holy-walnut">Total posts</span>
-                  <span className="font-bold text-holy-espresso">1,832</span>
+                <div className="flex justify-between items-center py-2 border-b border-blue-500">
+                  <span className="text-blue-100">Total posts</span>
+                  <span className="font-bold text-2xl">1,832</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-holy-walnut">Online users</span>
-                  <span className="font-bold text-green-600">12</span>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-blue-100">Online users</span>
+                  <span className="font-bold text-2xl text-green-300">12</span>
                 </div>
               </div>
             </div>
